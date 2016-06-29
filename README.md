@@ -1,50 +1,58 @@
-# RP入门
+# RP入門
 
 作者：[@andrestaltz](https://twitter.com/andrestaltz)
 
-翻译：[@benjycui](https://github.com/benjycui)、[@jsenjoy](https://github.com/jsenjoy)
+翻譯：[@benjycui](https://github.com/benjycui)、[@jsenjoy](https://github.com/jsenjoy)
 
-> 作者在[原文](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754)后回答了不少人的疑惑，推荐一看。
+正體中文轉換:[@gogobook](https://github.com/gogobook)
 
-> 在翻译时，术语我尽量不翻译，就算翻译了也会给出原文以作对照。因为就个人观察的情况而言，术语翻译难以统一，不同的译者会把同一个概念翻译成不同的版本，最终只会让读者困惑。而且术语往往就几个单词，记起来也不难。
+> 作者在[原文](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754)後回答了不少人的疑惑，推薦一看。
 
-> 作者在回复中提了一下FRP与RP是不同的，同时建议把这份教程中的FRP都替换为RP，所以译文就把FRP都替换为RP了。
+> 在翻譯時，術語我儘量不翻譯，就算翻譯了也會給出原文以作對照。因為就個人觀察的情況而言，術語翻譯難以統一，不同的譯者會把同一個概念翻譯成不同的版本，最終只會讓讀者困惑。而且術語往往就幾個單詞，記起來也不難。
 
-很明显你有兴趣学习这种被称作RP(Reactive Programming)的新技术，特别是它对应的实现如：Rx、Bacon.js、RAC等。
+> 作者在回覆中提了一下FRP與RP是不同的，同時建議把這份教程中的FRP都替換為RP，所以譯文就把FRP都替換為RP了。
 
-学习RP是很困难的一个过程，特别是在缺乏优秀资料的前提下。刚开始学习时，我试过去找一些教程，并找到了为数不多的实用教程，但是它们都流于表面，从没有围绕RP构建起一个完整的知识体系。库的文档往往也无法帮助你去了解它的函数。不信的话可以看一下这个：
+> gogobook>把英文附件更新，轉為正體中文並附上影片的連結。
+### This tutorial as a series of videos
+
+**If you prefer to watch video tutorials with live-coding, then check out this series I recorded with the same contents as in this article: [Egghead.io - Introduction to Reactive Programming](https://egghead.io/series/introduction-to-reactive-programming).**
+
+
+很明顯你有興趣學習這種被稱作RP(Reactive Programming)的新技術，特別是它對應的實現如：Rx、Bacon.js、RAC等。
+
+學習RP是很困難的一個過程，特別是在缺乏優秀資料的前提下。剛開始學習時，我試過去找一些教程，並找到了為數不多的實用教程，但是它們都流於表面，從沒有圍繞RP構建起一個完整的知識體系。庫的文檔往往也無法幫助你去瞭解它的函數。不信的話可以看一下這個：
 
 > **Rx.Observable.prototype.flatMapLatest(selector, [thisArg])**
 
 > ！@#￥%……&*
 
-尼玛。
+尼瑪。
 
-我看过两本书，一本只是讲述了一些概念，而另一本则纠结于如何使用RP库。我最终放弃了这种痛苦的学习方式，决定在开发中一边使用RP，一边理解它。在[Futurice](https://www.futurice.com)工作期间，我尝试在真实项目中使用RP，并且当我遇到困难时，得到了[同事们的帮助](http://blog.futurice.com/top-7-tips-for-rxjava-on-android)。
+我看過兩本書，一本只是講述了一些概念，而另一本則糾結於如何使用RP庫。我最終放棄了這種痛苦的學習方式，決定在開發中一邊使用RP，一邊理解它。在[Futurice](https://www.futurice.com)工作期間，我嘗試在真實項目中使用RP，並且當我遇到困難時，得到了[同事們的幫助](http://blog.futurice.com/top-7-tips-for-rxjava-on-android)。
 
-在学习过程中最困难的一部分是 **以RP的方式思考**。这意味着要放弃命令式且带状态的(Imperative and stateful)编程习惯，并且要强迫你的大脑以一种不同的方式去工作。在互联网上我找不到任何关于这方面的教程，而我觉得这世界需要一份关于怎么以RP的方式思考的实用教程，这样你就有足够的资料去起步。库的文档无法为你的学习提供指引，而我希望这篇文章可以。
+在學習過程中最困難的一部分是 **以RP的方式思考**。這意味著要放棄命令式且帶狀態的(Imperative and stateful)編程習慣，並且要強迫你的大腦以一種不同的方式去工作。在互聯網上我找不到任何關於這方面的教程，而我覺得這世界需要一份關於怎麼以RP的方式思考的實用教程，這樣你就有足夠的資料去起步。庫的文檔無法為你的學習提供指引，而我希望這篇文章可以。
 
-## 什么是RP?
+## 什麼是RP?
 
-在互联网上有着一大堆糟糕的解释与定义。[维基百科](https://en.wikipedia.org/wiki/Functional_reactive_programming)一如既往的空泛与理论化。[Stackoverflow](http://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming)的权威答案明显不适合初学者。[Reactive Manifesto](http://www.reactivemanifesto.org/)看起来是你展示给你公司的项目经理或者老板们看的东西。微软的[Rx terminology](https://rx.codeplex.com/) "Rx = Observables + LINQ + Schedulers" 过于重量级且微软味十足，只会让大部分人困惑。相对于你所使用的MV*框架以及钟爱的编程语言，"Reactive"和"Propagation of change"这些术语并没有传达任何有意义的概念。框架的Views层当然要对Models层作出反应，改变当然会传播(分别对应上文的"Reactive"与"Propagation of change"，意思是这一大堆术语和废话差不多，翻译不好，只能靠备注了)。如果没有这些，就没有东西会被渲染了。
+在互聯網上有著一大堆糟糕的解釋與定義。[維基百科](https://en.wikipedia.org/wiki/Functional_reactive_programming)一如既往的空泛與理論化。[Stackoverflow](http://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming)的權威答案明顯不適合初學者。[Reactive Manifesto](http://www.reactivemanifesto.org/)看起來是你展示給你公司的項目經理或者老闆們看的東西。微軟的[Rx terminology](https://rx.codeplex.com/) "Rx = Observables + LINQ + Schedulers" 過於重量級且微軟味十足，只會讓大部分人困惑。相對於你所使用的MV*框架以及鍾愛的編程語言，"Reactive"和"Propagation of change"這些術語並沒有傳達任何有意義的概念。框架的Views層當然要對Models層作出反應，改變當然會傳播(分別對應上文的"Reactive"與"Propagation of change"，意思是這一大堆術語和廢話差不多，翻譯不好，只能靠備註了)。如果沒有這些，就沒有東西會被渲染了。
 
-所以不要再扯这些废话了。
+所以不要再扯這些廢話了。
 
-### RP是使用异步数据流进行编程
+### RP是使用異步數據流進行編程
 
-一方面，这并不是什么新东西。Event buses或者Click events本质上就是异步事件流(Asynchronous event stream)，你可以监听并处理这些事件。RP的思路大概如下：你可以用包括Click和Hover事件在内的任何东西创建Data stream(原文："FRP is that idea on steroids. You are able to create data streams of anything, not just from click and hover events.")。Stream廉价且常见，任何东西都可以是一个Stream：变量、用户输入、属性、Cache、数据结构等等。举个例子，想像一下你的Twitter feed就像是Click events那样的Data stream，你可以监听它并相应的作出响应。
+一方面，這並不是什麼新東西。Event buses或者Click events本質上就是異步事件流(Asynchronous event stream)，你可以監聽並處理這些事件。RP的思路大概如下：你可以用包括Click和Hover事件在內的任何東西創建Data stream(原文："FRP is that idea on steroids. You are able to create data streams of anything, not just from click and hover events.")。Stream廉價且常見，任何東西都可以是一個Stream：變量、用戶輸入、屬性、Cache、數據結構等等。舉個例子，想像一下你的Twitter feed就像是Click events那樣的Data stream，你可以監聽它並相應的作出響應。
 
-**在这个基础上，你还有令人惊艳的函数去combine、create、filter这些Stream。**这就是函数式(Functional)魔法的用武之地。Stream能接受一个，甚至多个Stream为输入。你可以_merge_两个Stream，也可以从一个Stream中_filter_出你感兴趣的Events以生成一个新的Stream，还可以把一个Stream中的Data values _map_到一个新的Stream中。
+**在這個基礎上，你還有令人驚豔的函數去combine、create、filter這些Stream。**這就是函數式(Functional)魔法的用武之地。Stream能接受一個，甚至多個Stream為輸入。你可以_merge_兩個Stream，也可以從一個Stream中_filter_出你感興趣的Events以生成一個新的Stream，還可以把一個Stream中的Data values _map_到一個新的Stream中。
 
-既然Stream在RP中如此重要，那么我们就应该好好的了解它们，就从我们熟悉的"Clicks on a button" Event stream开始。
+既然Stream在RP中如此重要，那麼我們就應該好好的瞭解它們，就從我們熟悉的"Clicks on a button" Event stream開始。
 
 ![Click event stream](http://i.imgur.com/cL4MOsS.png)
 
-Stream就是一个 **按时间排序的Events(Ongoing events ordered in time)序列** ，它可以emit三种不同的Events：(某种类型的)Value、Error或者一个"Completed" Signal。考虑一下"Completed"发生的时机，例如，当包含这个Button(指上面Clicks on a button"例子中的Button)的Window或者View被关闭时。
+Stream就是一個 **按時間排序的Events(Ongoing events ordered in time)序列** ，它可以emit三種不同的Events：(某種類型的)Value、Error或者一個"Completed" Signal。考慮一下"Completed"發生的時機，例如，當包含這個Button(指上面Clicks on a button"例子中的Button)的Window或者View被關閉時。
 
-通过分别为Value、Error、"Completed"定义事件处理函数，我们将会异步地捕获这些Events。有时可以忽略Error与"Completed"，你只需要定义Value的事件处理函数就行。监听一个Stream也被称作是 **订阅(Subscribing)**，而我们所定义的函数就是观察者(Observer)，Stream则是被观察者(Observable)，其实就是[观察者模式(Observer Design Pattern)](https://en.wikipedia.org/wiki/Observer_pattern)。
+通過分別為Value、Error、"Completed"定義事件處理函數，我們將會異步地捕獲這些Events。有時可以忽略Error與"Completed"，你只需要定義Value的事件處理函數就行。監聽一個Stream也被稱作是 **訂閱(Subscribing)**，而我們所定義的函數就是觀察者(Observer)，Stream則是被觀察者(Observable)，其實就是[觀察者模式(Observer Design Pattern)](https://en.wikipedia.org/wiki/Observer_pattern)。
 
-上面的示意图也可以使用ASCII重画为下图，在下面的部分教程中我们会使用这幅图：
+上面的示意圖也可以使用ASCII重畫為下圖，在下面的部分教程中我們會使用這幅圖：
 
 ```
 --a---b-c---d---X---|->
@@ -55,9 +63,9 @@ X is an error
 ---> is the timeline
 ```
 
-既然已经开始对RP感到熟悉，为了不让你觉得无聊，我们可以尝试做一些新东西：我们将会把一个Click event stream转为新的Click event stream。
+既然已經開始對RP感到熟悉，為了不讓你覺得無聊，我們可以嘗試做一些新東西：我們將會把一個Click event stream轉為新的Click event stream。
 
-首先，让我们做一个能记录一个按钮点击了多少次的计数器Stream。在常见的RP库中，每个Stream都会有多个方法，`map`、`filter`、`scan`等等。当你调用其中一个方法时，例如`clickStream.map(f)`，它就会基于原来的Click stream返回一个 **新的Stream**。它不会对原来的Click steam作任何修改。这个特性就是 **不可变性(Immutability)**，它之于RP Stream，就如果汁之于薄煎饼。我们也可以对方法进行链式调用如`clickStream.map(f).scan(g)`：
+首先，讓我們做一個能記錄一個按鈕點擊了多少次的計數器Stream。在常見的RP庫中，每個Stream都會有多個方法，`map`、`filter`、`scan`等等。當你調用其中一個方法時，例如`clickStream.map(f)`，它就會基於原來的Click stream返回一個 **新的Stream**。它不會對原來的Click steam作任何修改。這個特性就是 **不可變性(Immutability)**，它之於RP Stream，就如果汁之於薄煎餅。我們也可以對方法進行鏈式調用如`clickStream.map(f).scan(g)`：
 
 ```
   clickStream: ---c----c--c----c------c-->
@@ -67,70 +75,70 @@ X is an error
 counterStream: ---1----2--3----4------5-->
 ```
 
-`map(f)`会根据你提供的`f`函数把原Stream中的Value分别映射到新的Stream中。在我们的例子中，我们把每一次Click都映射为数字1。`scan(g)`会根据你提供的`g`函数把Stream中的所有Value聚合成一个Value -- `x = g(accumulated, current)`，这个示例中`g`只是一个简单的add函数。然后，每Click一次，`counterStream`就会把点击的总次数发给它的观察者。
+`map(f)`會根據你提供的`f`函數把原Stream中的Value分別映射到新的Stream中。在我們的例子中，我們把每一次Click都映射為數字1。`scan(g)`會根據你提供的`g`函數把Stream中的所有Value聚合成一個Value -- `x = g(accumulated, current)`，這個示例中`g`只是一個簡單的add函數。然後，每Click一次，`counterStream`就會把點擊的總次數發給它的觀察者。
 
-为了展示RP真正的实力，让我们假设你想得到一个包含双击事件的Stream。为了让它更加有趣，假设我们想要的这个Stream要同时考虑三击(Triple clicks)，或者更加宽泛，连击(Multiple clicks)。深呼吸一下，然后想像一下在传统的命令式且带状态的方式中你会怎么实现。我敢打赌代码会像一堆乱麻，并且会使用一些的变量保存状态，同时也有一些计算时间间隔的代码。
+為了展示RP真正的實力，讓我們假設你想得到一個包含雙擊事件的Stream。為了讓它更加有趣，假設我們想要的這個Stream要同時考慮三擊(Triple clicks)，或者更加寬泛，連擊(Multiple clicks)。深呼吸一下，然後想像一下在傳統的命令式且帶狀態的方式中你會怎麼實現。我敢打賭代碼會像一堆亂麻，並且會使用一些的變量保存狀態，同時也有一些計算時間間隔的代碼。
 
-而在RP中，这个功能的实现就非常简单。事实上，这逻辑只有[4行代码](http://jsfiddle.net/staltz/4gGgs/27/)。但现在我们先不管那些代码。用图表的方式思考是理解怎样构建Stream的最好方法，无论你是初学者还是专家。
+而在RP中，這個功能的實現就非常簡單。事實上，這邏輯只有[4行代碼](http://jsfiddle.net/staltz/4gGgs/27/)。但現在我們先不管那些代碼。用圖表的方式思考是理解怎樣構建Stream的最好方法，無論你是初學者還是專家。
 
 ![Multiple clicks stream](http://i.imgur.com/HMGWNO5.png)
 
-灰色的方框是用来转换Stream的函数。首先，我们把时间间隔大于250ms的Click都放进一个列表(原文："First we accumulate clicks in lists, whenever 250 milliseconds of "event silence" has happened." ) -- 简单来说就是`buffer(stream.throttle(250ms))`做的事，不要在意这些细节，我们只是展示一下RP而已。结果是一个列表的Stream，然后我们使用`map()`把每个列表映射为一个整数，即它的长度。最终，我们使用`filter(x >= 2)`把整数`1`给过滤掉。就这样，3个操作就生成了我们想要的Stream。然后我们就可以订阅(监听)这个Stream，并以我们所希望的方式作出反应。
+灰色的方框是用來轉換Stream的函數。首先，我們把時間間隔大於250ms的Click都放進一個列表(原文："First we accumulate clicks in lists, whenever 250 milliseconds of "event silence" has happened." ) -- 簡單來說就是`buffer(stream.throttle(250ms))`做的事，不要在意這些細節，我們只是展示一下RP而已。結果是一個列表的Stream，然後我們使用`map()`把每個列表映射為一個整數，即它的長度。最終，我們使用`filter(x >= 2)`把整數`1`給過濾掉。就這樣，3個操作就生成了我們想要的Stream。然後我們就可以訂閱(監聽)這個Stream，並以我們所希望的方式作出反應。
 
-我希望你能感受到这个示例的优美之处。这个示例只是冰山一角：你可以把同样的操作应用到不同种类的Stream上，例如，一个API响应的Stream；另一方面，还有很多其它可用的函数。
+我希望你能感受到這個示例的優美之處。這個示例只是冰山一角：你可以把同樣的操作應用到不同種類的Stream上，例如，一個API響應的Stream；另一方面，還有很多其它可用的函數。
 
-## 为什么我要使用RP
+## 為什麼我要使用RP
 
-RP提高了代码的抽象层级，所以你可以只关注定义了业务逻辑的那些相互依赖的事件，而非纠缠于大量的实现细节。RP的代码往往会更加简明。
+RP提高了代碼的抽象層級，所以你可以只關注定義了業務邏輯的那些相互依賴的事件，而非糾纏於大量的實現細節。RP的代碼往往會更加簡明。
 
-特别是在开发现在这些有着大量与Data events相关的UI events的高互动性Webapps、Mobile apps的时候，RP的优势将更加明显。10年前，网页的交互就只是提交一个很长的表单到后端，而前端只有简单的渲染。Apps就表现得更加的实时了：修改一个表单域就能自动地把修改后的值保存到后端，为一些内容"点赞"时，会实时的反应到其它在线用户那里等等。
+特別是在開發現在這些有著大量與Data events相關的UI events的高互動性Webapps、Mobile apps的時候，RP的優勢將更加明顯。10年前，網頁的交互就只是提交一個很長的表單到後端，而前端只有簡單的渲染。Apps就表現得更加的實時了：修改一個表單域就能自動地把修改後的值保存到後端，為一些內容"點贊"時，會實時的反應到其它在線用戶那裡等等。
 
-现在的Apps有着大量各种各样的实时Events，以给用户提供一个交互性较高的体验。我们需要工具去应对这个变化，而RP就是一个答案。
+現在的Apps有著大量各種各樣的實時Events，以給用戶提供一個交互性較高的體驗。我們需要工具去應對這個變化，而RP就是一個答案。
 
 ## 以RP方式思考的例子
 
-让我们做一些实践。一个真实的例子一步一步的指导我们以RP的方式思考。不是虚构的例子，也没有只解释了一半的概念。学完教程之后，我们将写出真实可用的代码，并做到知其然，知其所以然。
+讓我們做一些實踐。一個真實的例子一步一步的指導我們以RP的方式思考。不是虛構的例子，也沒有只解釋了一半的概念。學完教程之後，我們將寫出真實可用的代碼，並做到知其然，知其所以然。
 
-在这个教程中，我将会使用 **JavaScript** 和 **[RxJS](https://github.com/Reactive-Extensions/RxJS)**，因为JavaScript是现在最多人会的语言，而[Rx* 库](https://rx.codeplex.com/)有多种语言版本，并支持多种平台([.NET](https://rx.codeplex.com/), [Java](https://github.com/Netflix/RxJava), [Scala](https://github.com/Netflix/RxJava/tree/master/language-adaptors/rxjava-scala), [Clojure](https://github.com/Netflix/RxJava/tree/master/language-adaptors/rxjava-clojure),  [JavaScript](https://github.com/Reactive-Extensions/RxJS), [Ruby](https://github.com/Reactive-Extensions/Rx.rb), [Python](https://github.com/Reactive-Extensions/RxPy), [C++](https://github.com/Reactive-Extensions/RxCpp), [Objective-C/Cocoa](https://github.com/ReactiveCocoa/ReactiveCocoa), [Groovy](https://github.com/Netflix/RxJava/tree/master/language-adaptors/rxjava-groovy), 等等)。所以，无论你用的是什么语言、库，你都能从下面这个教程中学到东西。
+在這個教程中，我將會使用 **JavaScript** 和 **[RxJS](https://github.com/Reactive-Extensions/RxJS)**，因為JavaScript是現在最多人會的語言，而[Rx* 庫](https://rx.codeplex.com/)有多種語言版本，並支持多種平台([.NET](https://rx.codeplex.com/), [Java](https://github.com/Netflix/RxJava), [Scala](https://github.com/Netflix/RxJava/tree/master/language-adaptors/rxjava-scala), [Clojure](https://github.com/Netflix/RxJava/tree/master/language-adaptors/rxjava-clojure),  [JavaScript](https://github.com/Reactive-Extensions/RxJS), [Ruby](https://github.com/Reactive-Extensions/Rx.rb), [Python](https://github.com/Reactive-Extensions/RxPy), [C++](https://github.com/Reactive-Extensions/RxCpp), [Objective-C/Cocoa](https://github.com/ReactiveCocoa/ReactiveCocoa), [Groovy](https://github.com/Netflix/RxJava/tree/master/language-adaptors/rxjava-groovy), 等等)。所以，無論你用的是什麼語言、庫，你都能從下面這個教程中學到東西。
 
-## 实现"Who to follow"推荐界面
+## 實現"Who to follow"推薦界面
 
-在Twitter上，这个界面看起来是这样的：
+在Twitter上，這個界面看起來是這樣的：
 
 ![Twitter Who to follow suggestions box](http://i.imgur.com/eAlNb0j.png)
 
-我们将会重点模拟它的核心功能，如下：
+我們將會重點模擬它的核心功能，如下：
 
-* 启动时从API那里加载帐户数据，并显示3个推荐
-* 点击"Refresh"时，加载另外3个推荐用户到这三行中
-* 点击帐号所在行的'x'按钮时，清除那个推荐然后显示一个新的推荐
-* 每行都会显示帐号的头像，以及他们主页的链接
+* 啟動時從API那裡加載帳戶數據，並顯示3個推薦
+* 點擊"Refresh"時，加載另外3個推薦用戶到這三行中
+* 點擊帳號所在行的'x'按鈕時，清除那個推薦然後顯示一個新的推薦
+* 每行都會顯示帳號的頭像，以及他們主頁的鏈接
 
-我们可以忽略其它的特性和按钮，因为它们是次要的。同时，因为Twitter最近关闭了对非授权用户的API，我们将会为Github实现这个推荐界面，而非Twitter。这是[Github获取用户的API](https://developer.github.com/v3/users/#get-all-users)。
+我們可以忽略其它的特性和按鈕，因為它們是次要的。同時，因為Twitter最近關閉了對非授權用戶的API，我們將會為Github實現這個推薦界面，而非Twitter。這是[Github獲取用戶的API](https://developer.github.com/v3/users/#get-all-users)。
 
-如果你想先看一下最终效果，这里有完成后的代码 http://jsfiddle.net/staltz/8jFJH/48/ 。
+如果你想先看一下最終效果，這裡有完成後的代碼 http://jsfiddle.net/staltz/8jFJH/48/ 。
 
-## Request与Response
+## Request與Response
 
-**在Rx中你该怎么处理这个问题呢？** 好吧，首先，(几乎)_所有的东西都可以转为一个Stream_。这就是Rx的咒语。让我们先从最简单的特性开始："在启动时，从API加载3个帐号的数据"。这并没有什么特别，就只是简单的(1)发出一个请求，(2)收到一个响应，(3)渲染这个响应。所以，让我们继续，并用Stream代表我们的请求。一开始可能会觉得杀鸡用牛刀，但我们应当从最基本的开始，是吧？
+**在Rx中你該怎麼處理這個問題呢？** 好吧，首先，(幾乎)_所有的東西都可以轉為一個Stream_。這就是Rx的咒語。讓我們先從最簡單的特性開始："在啟動時，從API加載3個帳號的數據"。這並沒有什麼特別，就只是簡單的(1)發出一個請求，(2)收到一個響應，(3)渲染這個響應。所以，讓我們繼續，並用Stream代表我們的請求。一開始可能會覺得殺雞用牛刀，但我們應當從最基本的開始，是吧？
 
-在启动的时候，我们只需要发出一个请求，所以如果我们把它转为一个Data stream的话，那就是一个只有一个Value的Stream。稍后，我们知道将会有多个请求发生，但现在，就只有一个请求。
+在啟動的時候，我們只需要發出一個請求，所以如果我們把它轉為一個Data stream的話，那就是一個只有一個Value的Stream。稍後，我們知道將會有多個請求發生，但現在，就只有一個請求。
 
 ```
 --a------|->
 
-a是一个String 'https://api.github.com/users'
+a是一個String 'https://api.github.com/users'
 ```
 
-这是一个包含了我们想向其发出请求的URL的Stream。每当一个请求事件发生时，它会告诉我们两件事："什么时候"与"什么东西"。"什么时候"这个请求会被执行，就是什么时候这个Event会被emit。"什么东西"会被请求，就是这个emit出来的Value：一个包含URL的String。
+這是一個包含了我們想向其發出請求的URL的Stream。每當一個請求事件發生時，它會告訴我們兩件事："什麼時候"與"什麼東西"。"什麼時候"這個請求會被執行，就是什麼時候這個Event會被emit。"什麼東西"會被請求，就是這個emit出來的Value：一個包含URL的String。
 
-在RX*中，创建只有一个Value的Stream是非常简单的。官方把一个Stream称作Observable，因为它可以被观察(can be observed => observable)，但是我发现那是个很傻逼的名子，所以我把它叫做_Stream_。
+在RX*中，創建只有一個Value的Stream是非常簡單的。官方把一個Stream稱作Observable，因為它可以被觀察(can be observed => observable)，但是我發現那是個很傻逼的名子，所以我把它叫做_Stream_。
 
 ```javascript
 var requestStream = Rx.Observable.just('https://api.github.com/users');
 ```
 
-但是现在，那只是一个包含了String的Stream，并没有什么特别，所以我们需要以某种方式使Value被emit。就是通过[订阅(Subscribing)](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservableprototypesubscribeobserver--onnext-onerror-oncompleted)这个Stream。
+但是現在，那只是一個包含了String的Stream，並沒有什麼特別，所以我們需要以某種方式使Value被emit。就是通過[訂閱(Subscribing)](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservableprototypesubscribeobserver--onnext-onerror-oncompleted)這個Stream。
 
 ```javascript
 requestStream.subscribe(function(requestUrl) {
@@ -141,7 +149,7 @@ requestStream.subscribe(function(requestUrl) {
 }
 ```
 
-留意一下我们使用了jQuery的Ajax函数(我们假设你已经知道[它的用途](http://devdocs.io/jquery/jquery.getjson))去发出异步请求。但先等等，Rx可以用来处理 **异步** Data stream。那这个请求的响应就不能当作一个包含了将会到达的数据的Stream么？当然，从理论上来讲，应该是可以的，所以我们尝试一下。
+留意一下我們使用了jQuery的Ajax函數(我們假設你已經知道[它的用途](http://devdocs.io/jquery/jquery.getjson))去發出異步請求。但先等等，Rx可以用來處理 **異步** Data stream。那這個請求的響應就不能當作一個包含了將會到達的數據的Stream麼？當然，從理論上來講，應該是可以的，所以我們嘗試一下。
 
 ```javascript
 requestStream.subscribe(function(requestUrl) {
@@ -159,7 +167,7 @@ requestStream.subscribe(function(requestUrl) {
 }
 ```
 
-[`Rx.Observable.create()`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservablecreatesubscribe)所做的事就是通过显式的通知每一个Observer(或者说是Subscriber) Data events(`onNext()`)或者Errors (`onError()`)来创建你自己的Stream。而我们所做的就只是把jQuery Ajax Promise包装起来而已。**打扰一下，这意味者Promise本质上就是一个Observable？**
+[`Rx.Observable.create()`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservablecreatesubscribe)所做的事就是通過顯式的通知每一個Observer(或者說是Subscriber) Data events(`onNext()`)或者Errors (`onError()`)來創建你自己的Stream。而我們所做的就只是把jQuery Ajax Promise包裝起來而已。**打擾一下，這意味者Promise本質上就是一個Observable？**
 
 &nbsp;
 &nbsp;
@@ -171,13 +179,13 @@ requestStream.subscribe(function(requestUrl) {
 
 Yes.
 
-Observable就是Promise++。在Rx中，你可以用`var stream = Rx.Observable.fromPromise(promise)`轻易的把一个Promise转为Observable，所以我们就这样子做吧。唯一的不同就是Observable并不遵循[Promises/A+](http://promises-aplus.github.io/promises-spec/)，但概念上没有冲突。Promise就是只有一个Value的Observable。Rx Stream比Promise更进一步的是允许返回多个Value。
+Observable就是Promise++。在Rx中，你可以用`var stream = Rx.Observable.fromPromise(promise)`輕易的把一個Promise轉為Observable，所以我們就這樣子做吧。唯一的不同就是Observable並不遵循[Promises/A+](http://promises-aplus.github.io/promises-spec/)，但概念上沒有衝突。Promise就是只有一個Value的Observable。Rx Stream比Promise更進一步的是允許返回多個Value。
 
-这样非常不错，并展现了Observables至少有Promise那么强大。所以如果你相信Promise宣传的那些东西，那么也请留意一下Rx Observables能胜任些什么。
+這樣非常不錯，並展現了Observables至少有Promise那麼強大。所以如果你相信Promise宣傳的那些東西，那麼也請留意一下Rx Observables能勝任些什麼。
 
-现在回到我们的例子，如果你已经注意到了我们在`subscribe()`内又调用了另外一个`subscribe()`，这类似于Callback hell。同样，你应该也注意到`responseStream`是建立在`requestStream`之上的。就像你之前了解到的那样，在Rx内有简单的机制可以从其它Stream中转换并创建出新的Stream，所以我们也应该这样子做。
+現在回到我們的例子，如果你已經注意到了我們在`subscribe()`內又調用了另外一個`subscribe()`，這類似於Callback hell。同樣，你應該也注意到`responseStream`是建立在`requestStream`之上的。就像你之前瞭解到的那樣，在Rx內有簡單的機制可以從其它Stream中轉換並創建出新的Stream，所以我們也應該這樣子做。
 
-你现在需要知道的一个基本的函数是[`map(f)`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservableprototypemapselector-thisarg)，它分别把`f()`应用到Stream A中的每一个Value，并把返回的Value放进Stream B里。如果我们也对Request Stream与Response Stream进行同样的处理，我们可以把Request URL映射(map)为Response Promise(而Promise可以转为Streams)。
+你現在需要知道的一個基本的函數是[`map(f)`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservableprototypemapselector-thisarg)，它分別把`f()`應用到Stream A中的每一個Value，並把返回的Value放進Stream B裡。如果我們也對Request Stream與Response Stream進行同樣的處理，我們可以把Request URL映射(map)為Response Promise(而Promise可以轉為Streams)。
 
 ```javascript
 var responseMetastream = requestStream
@@ -186,11 +194,11 @@ var responseMetastream = requestStream
   });
 ```
 
-然后，我们将会创造一个叫做"_Metastream_"的怪物：包含Stream的Stream。暂时不需要害怕。Metastream就是emit的每个Value都是Stream的Stream。你可以把它想像为[指针(Pointer)](https://en.wikipedia.org/wiki/Pointer_(computer_programming))：每个Value都是一个指向其它Stream的指针。在我们的例子里，每个Request URL都会被映射(map)为一个指向包含响应Promise stream的指针。
+然後，我們將會創造一個叫做"_Metastream_"的怪物：包含Stream的Stream。暫時不需要害怕。Metastream就是emit的每個Value都是Stream的Stream。你可以把它想像為[指針(Pointer)](https://en.wikipedia.org/wiki/Pointer_(computer_programming))：每個Value都是一個指向其它Stream的指針。在我們的例子裡，每個Request URL都會被映射(map)為一個指向包含響應Promise stream的指針。
 
 ![Response metastream](http://i.imgur.com/HHnmlac.png)
 
-Response的Metastream看起来会让人困惑，并且看起来也没有帮到我们什么。我们只想要一个简单的Response stream，它返回的Value应该是JSON而不是一个JSON对象的'Promise'。是时候介绍[Mr. Flatmap](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservableprototypeflatmapselector-resultselector)了：它是`map()`的一个版本，通过把应用到"trunk" Stream上的所有操作都应用到"branch" Stream上，可以"flatten" Metastream。Flatmap并不是用来"fix" Metastream的，因为Metastream也不是一个Bug，这只是一些用来处理Rx中的异步响应(Asynchronous response)的工具。
+Response的Metastream看起來會讓人困惑，並且看起來也沒有幫到我們什麼。我們只想要一個簡單的Response stream，它返回的Value應該是JSON而不是一個JSON物件的'Promise'。是時候介紹[Mr. Flatmap](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservableprototypeflatmapselector-resultselector)了：它是`map()`的一個版本，通過把應用到"trunk" Stream上的所有操作都應用到"branch" Stream上，可以"flatten" Metastream。Flatmap並不是用來"fix" Metastream的，因為Metastream也不是一個Bug，這只是一些用來處理Rx中的異步響應(Asynchronous response)的工具。
 
 ```javascript
 var responseStream = requestStream
@@ -201,16 +209,16 @@ var responseStream = requestStream
 
 ![Response stream](http://i.imgur.com/Hi3zNzJ.png)
 
-很好。因为Response stream是根据Request stream定义的，所以**如果**我们后面在Request stream上发起更多的请求的话，在Response stream上我们将会得到相应的Response event，就像预期的那样：
+很好。因為Response stream是根據Request stream定義的，所以**如果**我們後面在Request stream上發起更多的請求的話，在Response stream上我們將會得到相應的Response event，就像預期的那樣：
 
 ```
 requestStream:  --a-----b--c------------|->
 responseStream: -----A--------B-----C---|->
 
-(小写字母是一个Request，大写字母是对应的Response)
+(小寫字母是一個Request，大寫字母是對應的Response)
 ```
 
-现在，我们终于有了一个Response stream，所以可以把收到的数据渲染出来了：
+現在，我們終於有了一個Response stream，所以可以把收到的數據渲染出來了：
 
 ```javascript
 responseStream.subscribe(function(response) {
@@ -218,7 +226,7 @@ responseStream.subscribe(function(response) {
 });
 ```
 
-把目前为止所有的代码放到一起就是这样：
+把目前為止所有的代碼放到一起就是這樣：
 
 ```javascript
 var requestStream = Rx.Observable.just('https://api.github.com/users');
@@ -233,18 +241,18 @@ responseStream.subscribe(function(response) {
 });
 ```
 
-## Refresh按钮
+## Refresh按鈕
 
-我之前并没有提到返回的JSON是一个有着100个用户数据的列表。因为这个API只允许我们设置偏移量(Offset)，而无法设置返回的用户数，所以我们现在是只用了3个用户的数据而浪费了另外97个的数据。这个问题暂时可以忽略，稍后我们会学习怎么缓存这些数据。
+我之前並沒有提到返回的JSON是一個有著100個用戶數據的列表。因為這個API只允許我們設置偏移量(Offset)，而無法設置返回的用戶數，所以我們現在是只用了3個用戶的數據而浪費了另外97個的數據。這個問題暫時可以忽略，稍後我們會學習怎麼緩存這些數據。
 
-每点击一次Refresh按钮，Request stream就会emit一个新的URL，同时也会返回一个新的Response。我们需要两样东西：一个是Refresh按钮上Click events组成的Stream(咒语：一切皆Stream)，而Request stream将改为随Refresh click stream作出反应。幸运的是，RxJS提供了从Event listener生成Observable的函数。
+每點擊一次Refresh按鈕，Request stream就會emit一個新的URL，同時也會返回一個新的Response。我們需要兩樣東西：一個是Refresh按鈕上Click events組成的Stream(咒語：一切皆Stream)，而Request stream將改為隨Refresh click stream作出反應。幸運的是，RxJS提供了從Event listener生成Observable的函數。
 
 ```javascript
 var refreshButton = document.querySelector('.refresh');
 var refreshClickStream = Rx.Observable.fromEvent(refreshButton, 'click');
 ```
 
-既然Refresh click event本身并没有提供任何要请求的API URL，我们需要把每一次的Click都映射为一个URL。现在，我们把Refresh click stream映射为新的Request stream，其中每一个Click都分别映射为对API请求一个随机偏移量的URL。
+既然Refresh click event本身並沒有提供任何要請求的API URL，我們需要把每一次的Click都映射為一個URL。現在，我們把Refresh click stream映射為新的Request stream，其中每一個Click都分別映射為對API請求一個隨機偏移量的URL。
 
 ```javascript
 var requestStream = refreshClickStream
@@ -254,9 +262,9 @@ var requestStream = refreshClickStream
   });
 ```
 
-因为我比较笨并且也没有使用自动化测试，所以我刚把之前做好的一个特性搞烂了。现在在启动时不会再发出任何的Request，而只有在点击Refresh按钮时才会。额...这两个行为我都需要：无论是点击Refresh按钮时还是刚打开页面时都该发出一个Request。
+因為我比較笨並且也沒有使用自動化測試，所以我剛把之前做好的一個特性搞爛了。現在在啟動時不會再發出任何的Request，而只有在點擊Refresh按鈕時才會。額...這兩個行為我都需要：無論是點擊Refresh按鈕時還是剛打開頁面時都該發出一個Request。
 
-我们知道怎么分别为这两种情况生成Stream：
+我們知道怎麼分別為這兩種情況生成Stream：
 
 ```javascript
 var requestOnRefreshStream = refreshClickStream
@@ -268,7 +276,7 @@ var requestOnRefreshStream = refreshClickStream
 var startupRequestStream = Rx.Observable.just('https://api.github.com/users');
 ```
 
-但我们怎样才能把这两个"合成(merge)"一个呢？好吧，有[`merge()`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservableprototypemergemaxconcurrent--other)函数。这就是它做的事的图解：
+但我們怎樣才能把這兩個"合成(merge)"一個呢？好吧，有[`merge()`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservableprototypemergemaxconcurrent--other)函數。這就是它做的事的圖解：
 
 ```
 stream A: ---a--------e-----o----->
@@ -277,7 +285,7 @@ stream B: -----B---C-----D-------->
           ---a-B---C--e--D--o----->
 ```
 
-这样就简单了：
+這樣就簡單了：
 
 ```javascript
 var requestOnRefreshStream = refreshClickStream
@@ -293,7 +301,7 @@ var requestStream = Rx.Observable.merge(
 );
 ```
 
-还有一个更加干净的可选方案，不需要使用中间变量。
+還有一個更加乾淨的可選方案，不需要使用中間變量。
 
 ```javascript
 var requestStream = refreshClickStream
@@ -304,7 +312,7 @@ var requestStream = refreshClickStream
   .merge(Rx.Observable.just('https://api.github.com/users'));
 ```
 
-甚至可以更短，更具有可读性：
+甚至可以更短，更具有可讀性：
 
 ```javascript
 var requestStream = refreshClickStream
@@ -315,7 +323,7 @@ var requestStream = refreshClickStream
   .startWith('https://api.github.com/users');
 ```
 
-[`startWith()`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservableprototypestartwithscheduler-args)函数做的事和你预期的完全一样。无论你输入的Stream是怎样，`startWith(x)`输出的Stream一开始都是`x`。但是还不够[DRY](https://en.wikipedia.org/wiki/Don't_repeat_yourself)，我重复了API URL。一个改进的方法是移掉`refreshClickStream`最后的`startWith()`，并在一开始的时候"emulate"一次Click。
+[`startWith()`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservableprototypestartwithscheduler-args)函數做的事和你預期的完全一樣。無論你輸入的Stream是怎樣，`startWith(x)`輸出的Stream一開始都是`x`。但是還不夠[DRY](https://en.wikipedia.org/wiki/Don't_repeat_yourself)，我重複了API URL。一個改進的方法是移掉`refreshClickStream`最後的`startWith()`，並在一開始的時候"emulate"一次Click。
 
 ```javascript
 var requestStream = refreshClickStream.startWith('startup click')
@@ -325,11 +333,11 @@ var requestStream = refreshClickStream.startWith('startup click')
   });
 ```
 
-很好。如果你把之前我"搞烂了的版本"的代码和现在的相比，就会发现唯一的不同是加了`startWith()`函数。
+很好。如果你把之前我"搞爛了的版本"的代碼和現在的相比，就會發現唯一的不同是加了`startWith()`函數。
 
-## 用Stream构建三个推荐
+## 用Stream構建三個推薦
 
-到现在为止，我们只是谈及了这个 _推荐_ UI元素在responeStream的`subscribe()`内执行的渲染步骤。对于Refresh按钮，我们还有一个问题：当你点击`Refresh`时，当前存在的三个推荐并不会被清除。新的推荐会在Response到达后出现，为了让UI看起来舒服一些，当点击刷新时，我们需要清理掉当前的推荐。
+到現在為止，我們只是談及了這個 _推薦_ UI元素在responeStream的`subscribe()`內執行的渲染步驟。對於Refresh按鈕，我們還有一個問題：當你點擊`Refresh`時，當前存在的三個推薦並不會被清除。新的推薦會在Response到達後出現，為了讓UI看起來舒服一些，當點擊刷新時，我們需要清理掉當前的推薦。
 
 ```javascript
 refreshClickStream.subscribe(function() {
@@ -337,7 +345,7 @@ refreshClickStream.subscribe(function() {
 });
 ```
 
-不，别那么快，朋友。这样不好，我们现在有 **两个** Subscriber会影响到推荐的DOM元素(另外一个是`responseStream.subscribe()`)，而且这样完全不符合[Separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns)。还记得RP的咒语么？
+不，別那麼快，朋友。這樣不好，我們現在有 **兩個** Subscriber會影響到推薦的DOM元素(另外一個是`responseStream.subscribe()`)，而且這樣完全不符合[Separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns)。還記得RP的咒語麼？
 
 &nbsp;
 &nbsp;
@@ -346,7 +354,7 @@ refreshClickStream.subscribe(function() {
 
 ![Mantra](http://i.imgur.com/AIimQ8C.jpg)
 
-所以让我们把显示的推荐设计成emit的值为一个包含了推荐内容的JSON对象的Stream。我们以此把三个推荐内容分开来。现在第一个推荐看起来是这样子的：
+所以讓我們把顯示的推薦設計成emit的值為一個包含了推薦內容的JSON物件的Stream。我們以此把三個推薦內容分開來。現在第一個推薦看起來是這樣子的：
 
 ```javascript
 var suggestion1Stream = responseStream
@@ -356,16 +364,16 @@ var suggestion1Stream = responseStream
   });
 ```
 
-其他的，`suggestion2Stream`和`suggestion3Stream`可以简单的拷贝`suggestion·Stream`的代码来使用。这不是DRY，它会让我们的例子变得更加简单一些，加之我觉得这是一个可以帮助考虑如何减少重复的良好实践。
+其他的，`suggestion2Stream`和`suggestion3Stream`可以簡單的拷貝`suggestion·Stream`的代碼來使用。這不是DRY，它會讓我們的例子變得更加簡單一些，加之我覺得這是一個可以幫助考慮如何減少重複的良好實踐。
 
-我们不在responseStream的subscribe()中处理渲染了，我们这么处理：
+我們不在responseStream的subscribe()中處理渲染了，我們這麼處理：
 
 ```javascript
 suggestion1Stream.subscribe(function(suggestion) {
   // render the 1st suggestion to the DOM
 });
 ```
-回到"当刷新时，清理掉当前的推荐"，我们可以很简单的把刷新点击映射为`null`(即没有推荐数据)，并且在`suggestion1Stream`中包含进来，如下：
+回到"當刷新時，清理掉當前的推薦"，我們可以很簡單的把刷新點擊映射為`null`(即沒有推薦數據)，並且在`suggestion1Stream`中包含進來，如下：
 
 ```javascript
 var suggestion1Stream = responseStream
@@ -378,7 +386,7 @@ var suggestion1Stream = responseStream
   );
 ```
 
-当渲染时，`null`解释为"没有数据"，所以把UI元素隐藏起来。
+當渲染時，`null`解釋為"沒有數據"，所以把UI元素隱藏起來。
 
 ```javascript
 suggestion1Stream.subscribe(function(suggestion) {
@@ -392,7 +400,7 @@ suggestion1Stream.subscribe(function(suggestion) {
 });
 ```
 
-现在的示意图：
+現在的示意圖：
 
 ```
 refreshClickStream: ----------o--------o---->
@@ -405,7 +413,7 @@ refreshClickStream: ----------o--------o---->
 
 `N`即代表了`null`
 
-作为一种补充，我们也可以在一开始的时候就渲染空的推荐内容。这通过把`startWith(null)`添加到Suggestion stream就完成了：
+作為一種補充，我們也可以在一開始的時候就渲染空的推薦內容。這通過把`startWith(null)`添加到Suggestion stream就完成了：
 
 ```javascript
 var suggestion1Stream = responseStream
@@ -419,7 +427,7 @@ var suggestion1Stream = responseStream
   .startWith(null);
 ```
 
-现在结果是：
+現在結果是：
 
 ```
 refreshClickStream: ----------o---------o---->
@@ -430,9 +438,9 @@ refreshClickStream: ----------o---------o---->
  suggestion3Stream: -N--t-----N----t----N-t-->
 ```
 
-## 关闭推荐并缓存Response
+## 關閉推薦並緩存Response
 
-还有一个功能需要实现。每一个推荐，都该有自己的"X"按钮以关闭它，然后在该位置加载另一个推荐。最初的想法，是点击任何关闭按钮时都需要发起一个新的请求：
+還有一個功能需要實現。每一個推薦，都該有自己的"X"按鈕以關閉它，然後在該位置加載另一個推薦。最初的想法，是點擊任何關閉按鈕時都需要發起一個新的請求：
 
 ```javascript
 var close1Button = document.querySelector('.close1');
@@ -447,9 +455,9 @@ var requestStream = refreshClickStream.startWith('startup click')
   });
 ```
 
-这个没有效果。这将会关闭并且重新加载_所有_的推荐，而不是仅仅处理我们点击的那一个。有一些不一样的方法可以解决，并且让它变得更加有趣，我们可以通过复用之前的请求来解决它。API的Response有100个用户，而我们仅仅使用其中的三个，所以还有很多的新数据可以使用，无须重新发起请求。
+這個沒有效果。這將會關閉並且重新加載_所有_的推薦，而不是僅僅處理我們點擊的那一個。有一些不一樣的方法可以解決，並且讓它變得更加有趣，我們可以通過復用之前的請求來解決它。API的Response有100個用戶，而我們僅僅使用其中的三個，所以還有很多的新數據可以使用，無須重新發起請求。
 
-同样的，我们用Stream的方式来思考。当点击'close1'时，我们想要从responseStream _最近emit的_ Response列表中获取一个随机的用户，如：
+同樣的，我們用Stream的方式來思考。當點擊'close1'時，我們想要從responseStream _最近emit的_ Response列表中獲取一個隨機的用戶，如：
 
 ```
     requestStream: --r--------------->
@@ -458,7 +466,7 @@ close1ClickStream: ------------c----->
 suggestion1Stream: ------s-----s----->
 ```
 
-在Rx*中，[`combineLatest`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservableprototypecombinelatestargs-resultselector)似乎实现了我们想要的功能。它接受两个Stream，A和B作为输入，当其中一个Stream emit一个值时，`combineLatest`把最近两个emit的值`a`和`b`从各自的Stream中取出并且返回一个`c = f(x,y)`，`f`为你定义的函数。用图来表示更好：
+在Rx*中，[`combineLatest`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservableprototypecombinelatestargs-resultselector)似乎實現了我們想要的功能。它接受兩個Stream，A和B作為輸入，當其中一個Stream emit一個值時，`combineLatest`把最近兩個emit的值`a`和`b`從各自的Stream中取出並且返回一個`c = f(x,y)`，`f`為你定義的函數。用圖來表示更好：
 
 ```
 stream A: --a-----------e--------i-------->
@@ -466,10 +474,10 @@ stream B: -----b----c--------d-------q---->
           vvvvvvvv combineLatest(f) vvvvvvv
           ----AB---AC--EC---ED--ID--IQ---->
 
-f是把值转化成大写字母的函数
+f是把值轉化成大寫字母的函數
 ```
 
-我们可以在`close1ClickStream`和`responseStream`上使用combineLatest()，所以无论什么时候当一个按钮被点击时，我们可以拿到Response最新emit的值，并且在`suggestion1Stream`上产生一个新的值。另一方面，combineLatest()是对称的，当一个新的Response 在`responseStream` emit时，它将会把最后的'关闭 1'的点击事件一起合并来产生一个新的推荐。这是有趣的，因为它允许我们把之前的`suggestion1Stream`代码简化成下边这个样子：
+我們可以在`close1ClickStream`和`responseStream`上使用combineLatest()，所以無論什麼時候當一個按鈕被點擊時，我們可以拿到Response最新emit的值，並且在`suggestion1Stream`上產生一個新的值。另一方面，combineLatest()是對稱的，當一個新的Response 在`responseStream` emit時，它將會把最後的'關閉 1'的點擊事件一起合併來產生一個新的推薦。這是有趣的，因為它允許我們把之前的`suggestion1Stream`代碼簡化成下邊這個樣子：
 
 ```javascript
 var suggestion1Stream = close1ClickStream
@@ -484,9 +492,9 @@ var suggestion1Stream = close1ClickStream
   .startWith(null);
 ```
 
-还有一个问题需要解决。combineLatest()使用最近的两个数据源，但是当其中一个来源没发起任何事件时，combineLatest()无法在Output stream中产生一个Data event。从上边的ASCII图中，你可以看到，在第一个Stream emit `a`这个值时并没有任何输出产生，只有当第二个Stream emit `b`时才有值输出。
+還有一個問題需要解決。combineLatest()使用最近的兩個數據源，但是當其中一個來源沒發起任何事件時，combineLatest()無法在Output stream中產生一個Data event。從上邊的ASCII圖中，你可以看到，在第一個Stream emit `a`這個值時並沒有任何輸出產生，只有當第二個Stream emit `b`時才有值輸出。
 
-有多种方法可以解决这个问题，我们选择最简单的一种，一开始在'close 1'按钮上模拟一个点击事件：
+有多種方法可以解決這個問題，我們選擇最簡單的一種，一開始在'close 1'按鈕上模擬一個點擊事件：
 
 ```javascript
 var suggestion1Stream = close1ClickStream.startWith('startup click') // we added this
@@ -501,9 +509,9 @@ var suggestion1Stream = close1ClickStream.startWith('startup click') // we added
   .startWith(null);
 ```
 
-## 总结
+## 總結
 
-终于完成了，所有的代码合在一起是这样子：
+終於完成了，所有的代碼合在一起是這樣子：
 
 ```javascript
 var refreshButton = document.querySelector('.refresh');
@@ -547,20 +555,20 @@ suggestion1Stream.subscribe(function(suggestion) {
 });
 ```
 
-**你可以查看这个最终效果 http://jsfiddle.net/staltz/8jFJH/48/**
+**你可以查看這個最終效果 http://jsfiddle.net/staltz/8jFJH/48/**
 
-这段代码虽然短小，但实现了不少功能：它适当的使用Separation of concerns实现了对Multiple events的管理，甚至缓存了响应。函数式的风格让代码看起来更加Declarative而非Imperative：我们并非给出一组指令去执行，而是通过定义Stream之间的关系 **定义这是什么**。举个例子，我们使用Rx告诉计算机 _`suggestion1Stream` **是** 由 'close 1' Stream与最新响应中的一个用户合并(combine)而来，在程序刚运行或者刷新时则是`null`_。
+這段代碼雖然短小，但實現了不少功能：它適當的使用Separation of concerns實現了對Multiple events的管理，甚至緩存了響應。函數式的風格讓代碼看起來更加Declarative而非Imperative：我們並非給出一組指令去執行，而是通過定義Stream之間的關係 **定義這是什麼**。舉個例子，我們使用Rx告訴計算機 _`suggestion1Stream` **是** 由 'close 1' Stream與最新響應中的一個用戶合併(combine)而來，在程序剛運行或者刷新時則是`null`_。
 
-留意一下代码中并没有出现如`if`、`for`、`while`这样的控制语句，或者一般JavaScript应用中典型的基于回调的控制流。如果你想使用`filter()`，上面的`subscribe()`中甚至可以不用`if`、`else`(实现细节留给读者作为练习)。在Rx中，我们有着像`map`、`filter`、`scan`、`merge`、`combineLatest`、`startWith`这样的Stream函数，甚至更多类似的函数去控制一个事件驱动(Event-driven)的程序。这个工具集让你可以用更少的代码实现更多的功能。
+留意一下代碼中並沒有出現如`if`、`for`、`while`這樣的控制語句，或者一般JavaScript應用中典型的基於回調的控制流。如果你想使用`filter()`，上面的`subscribe()`中甚至可以不用`if`、`else`(實現細節留給讀者作為練習)。在Rx中，我們有著像`map`、`filter`、`scan`、`merge`、`combineLatest`、`startWith`這樣的Stream函數，甚至更多類似的函數去控制一個事件驅動(Event-driven)的程序。這個工具集讓你可以用更少的代碼實現更多的功能。
 
 ## 下一步
 
-如果你觉得Rx*会成为你首选的RP库，花点时间去熟悉这个[函数列表](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md)，包括了如何转换(transform)、合并(combine)、以及创建Observable。如果你想通过图表去理解这些函数，看一下这份[RxJava's very useful documentation with marble diagrams](https://github.com/Netflix/RxJava/wiki/Creating-Observables)。无论什么时候你遇到问题，画一下这些图，思考一下，看一下这一大串函数，然后继续思考。以我个人经验，这样效果很明显。
+如果你覺得Rx*會成為你首選的RP庫，花點時間去熟悉這個[函數列表](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md)，包括了如何轉換(transform)、合併(combine)、以及創建Observable。如果你想通過圖表去理解這些函數，看一下這份[RxJava's very useful documentation with marble diagrams](https://github.com/Netflix/RxJava/wiki/Creating-Observables)。無論什麼時候你遇到問題，畫一下這些圖，思考一下，看一下這一大串函數，然後繼續思考。以我個人經驗，這樣效果很明顯。
 
-一旦你开始使用Rx*去编程，很有必要去理解[Cold vs Hot Observables](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/gettingstarted/creating.md#cold-vs-hot-observables)中的概念。如果忽略了这些，你一不小心就会被它坑了。我提醒过你了。通过学习真正的函数式编程(Funational programming)去提升自己的技能，并熟悉那些会影响到Rx*的问题，比如副作用(Side effect)。
+一旦你開始使用Rx*去編程，很有必要去理解[Cold vs Hot Observables](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/gettingstarted/creating.md#cold-vs-hot-observables)中的概念。如果忽略了這些，你一不小心就會被它坑了。我提醒過你了。通過學習真正的函數式編程(Funational programming)去提升自己的技能，並熟悉那些會影響到Rx*的問題，比如副作用(Side effect)。
 
-但是RP不仅仅有Rx*。还有相对容易理解的[Bacon.js](http://baconjs.github.io/)，它没有Rx*那些怪癖。[Elm Language](http://elm-lang.org/)则以它自己的方式支持RP：它是一门会编译成Javascript + HTML + CSS的FRP **语言**，并有一个[Time travelling debugger](http://debug.elm-lang.org/)。非常NB。
+但是RP不僅僅有Rx*。還有相對容易理解的[Bacon.js](http://baconjs.github.io/)，它沒有Rx*那些怪癖。[Elm Language](http://elm-lang.org/)則以它自己的方式支持RP：它是一門會編譯成Javascript + HTML + CSS的FRP **語言**，並有一個[Time travelling debugger](http://debug.elm-lang.org/)。非常NB。
 
-Rx在需要处理大量事件的Frontend和Apps中非常有用。但它不仅仅能用在客户端，在Backend或者与Database交互时也非常有用。事实上，[RxJava是实现Netflix's API服务器端并发的一个重要组件](http://techblog.netflix.com/2013/02/rxjava-netflix-api.html)。Rx并不是一个只能在某种应用或者语言中使用的Framework。它本质上是一个在开发任何Event-driven软件中都能使用的编程范式(Paradigm)。
+Rx在需要處理大量事件的Frontend和Apps中非常有用。但它不僅僅能用在客戶端，在Backend或者與Database交互時也非常有用。事實上，[RxJava是實現Netflix's API服務器端並發的一個重要組件](http://techblog.netflix.com/2013/02/rxjava-netflix-api.html)。Rx並不是一個只能在某種應用或者語言中使用的Framework。它本質上是一個在開發任何Event-driven軟件中都能使用的編程範式(Paradigm)。
 
-如果这份教程能帮到你，[请与更多人分享](https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fgist.github.com%2Fstaltz%2F868e7e9bc2a7b8c1f754%2F&amp;text=The%20introduction%20to%20Reactive%20Programming%20you%27ve%20been%20missing&amp;tw_p=tweetbutton&amp;url=https%3A%2F%2Fgist.github.com%2Fstaltz%2F868e7e9bc2a7b8c1f754&amp;via=andrestaltz)。
+如果這份教程能幫到你，[請與更多人分享](https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fgist.github.com%2Fstaltz%2F868e7e9bc2a7b8c1f754%2F&amp;text=The%20introduction%20to%20Reactive%20Programming%20you%27ve%20been%20missing&amp;tw_p=tweetbutton&amp;url=https%3A%2F%2Fgist.github.com%2Fstaltz%2F868e7e9bc2a7b8c1f754&amp;via=andrestaltz)。
